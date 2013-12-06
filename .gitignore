@@ -1,0 +1,6 @@
+.vagrant/
+*.pyc
+*.swp
+*.bak
+*.msi
+*.box
