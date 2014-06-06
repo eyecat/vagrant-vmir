@@ -18,12 +18,25 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     master_conf.vm.provider :virtualbox do |v|
       v.name = "mir"
       v.gui = (ENV['OS'] == 'Windows_NT')
-      v.customize ["modifyvm", :id, "--memory", "1024", "--cpus", "1"]
+      v.customize ["modifyvm", :id, "--memory", "512", "--cpus", "1"]
     end
     master_conf.vm.provision :shell do |shell|
-      shell.inline = "truncate -s 0 /var/log/mir_*.log&&service mir start"
+      shell.inline = "truncate -s 0 /var/log/mir_*.log&&/opt/mandiant/bin/deployUtils/MultiMIR/primary/step1_configure_mir_primary.sh 33.33.66.100&&/opt/mandiant/bin/deployUtils/MultiMIR/primary/step2_create_remote_mir.sh mandiant&&/opt/mandiant/bin/deployUtils/MultiMIR/primary/step3_add_secondary_to_primary.sh 33.33.66.101 mir2&&cp -f /tmp/remote_mir_MIRApp*.zip /vagrant"
     end
+  end
 
+  config.vm.define :master2 do |master_conf|
+    master_conf.vm.host_name = "mir2"
+    master_conf.vm.box = "mir-3.0"
+    master_conf.vm.network :private_network, ip: "33.33.66.101"
+    master_conf.vm.provider :virtualbox do |v|
+      v.name = "mir2"
+      v.gui = (ENV['OS'] == 'Windows_NT')
+      v.customize ["modifyvm", :id, "--memory", "512", "--cpus", "1"]
+    end
+    master_conf.vm.provision :shell do |shell|
+      shell.inline = "truncate -s 0 /var/log/mir_*.log&&/opt/mandiant/bin/deployUtils/MultiMIR/secondary/step1_convert_secondary_mir.sh $(ls -b /vagrant/remote_mir_MIRApp*.zip) 33.33.66.100 mandiant"
+    end
   end
 
 #  config.vm.define :dc do |dc_conf|
@@ -67,14 +80,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vmname = "slave#{i}"
     config.vm.define vmname.to_sym do |slave_conf|
       slave_conf.vm.box = "windows-2008r2-standard"
-      slave_conf.vm.network :private_network, ip: "33.33.66.#{i+100}"
+      slave_conf.vm.host_name = "mirclient#{i}"
+      slave_conf.vm.network :private_network, ip: "33.33.66.#{i+200}"
       slave_conf.vm.provider :virtualbox do |v|
         v.name = "mirclient#{i}"
         v.gui = (ENV['OS'] == 'Windows_NT')
         v.customize ["modifyvm", :id, "--memory", "1024", "--cpus", "1"]
       end
 
-      slave_conf.windows.halt_timeout = 25
+      slave_conf.windows.halt_timeout = 60
     
       # Admin user name and password
       slave_conf.winrm.username = "vagrant"

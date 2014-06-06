@@ -1,0 +1,145 @@
+<agent_configuration version="1.0">
+
+	<!-- Section to describe MAgent's Interaction with Controller -->
+	<!-- Discovery                                                   -->
+	<section name="discovery">
+	<!-- The server address and port of the Discovery server     -->
+               <key name="server">33.33.66.100</key>
+
+
+		<!-- The number of retries that should be attempted when a   -->
+		<!-- connection error occurs                                 -->
+		<key name="error_retries">3</key>
+
+		<!-- The interval, in minutes, when the Discovery server     -->
+		<!-- should be polled                                        -->
+		<key name="interval">30</key>
+	</section>
+
+	<!-- Section to describe Store & Forward Server parameters -->
+	<section name="serverlist">
+		<section name="server">
+			<!-- The server address and port of the Store & Forward Server -->
+			<key name="server">33.33.66.100</key>
+			<key name="url">/poll</key>
+		</section>
+		<section name="provisioning_server">
+			<!-- The server address and port of the Provisioning Server -->
+                        <key name="server">33.33.66.100</key>
+			<key name="url">/</key>
+			<!-- The challenge password -->
+			<key name="challenge_password">password</key>
+		</section>
+		<!-- The minimum number of seconds Mandiant Agent should wait before attempting to reconnect to -->
+		<!-- a server if there was a connection issue, including a dropped connection -->
+		<key name="min_retry_delay">10</key>
+		<!-- The maximum number of seconds Mandiant Agent should wait after attempting to reconnect to -->
+		<!-- a server if there was a connection issue, including a dropped connection -->
+        <!-- NOTE: this is a progressive value; at 1800 (30 min) this takes more like 75 min.  At 35 seconds, actual elapsed is ~70 seconds -->
+		<key name="max_retry_delay">35</key>
+	</section>
+	<!-- Section to describe parameters when Mandiant Agent running as a Windows Service -->
+	<section name="service">
+		<!-- The name of the Mandiant Agent Windows Service -->
+		<key name="service_name">magent</key>
+		<!-- The display name of the Mandiant Agent Windows Service -->
+		<key name="service_displayname">Mandiant Agent</key>
+		<!-- The description of the Mandiant Agent Windows Service -->
+		<key name="service_description">Mandiant Agent</key>
+		<!-- Have Mandiant Agent return issue messages at or above a particular level -->
+		<!--  Valid values: debug, info, warning, error -->
+		<key name="audit_issue_filter_level">info</key>
+		<!-- Have Mandiant Agent run hidden in the system. This includes removing -->
+		<!-- Mandiant Agent from Add/Remove Programs, hide Mandiant Agent -->
+		<!-- installation folders, and, if supported, hide the Mandiant Agent process. -->
+		<key name="hidden">false</key>
+		<!-- Remove Mandiant Agent from Add/Remove Programs -->
+		<key name="hide_from_addremove">false</key>
+		<!-- Enable the generation of realtime events when a UDP datagram is sent. -->
+		<key name="udp_send_events">false</key>
+		<!-- Number of mrt driver events needed to signal the agent for pickup. -->
+		<key name="mrt_events_threshold">300</key>
+		<!-- Maximum time (seconds) agent will wait without signal to pick up mrt driver events. -->
+		<key name="mrt_max_poll_interval">5</key>
+		<!-- Set to true if you'd like to uninstall MIR after the first successful poll. -->
+		<key name="remove_mir">false</key>
+	</section>
+	<!-- Section to describe buffering parameters used while streaming data to and from the server. -->
+	<section name="buffering">
+		<!-- The size of the buffer for receiving data -->
+		<key name="read_buffer_size">4000000</key>
+		<!-- The size of the cache (backup) buffer for receiving data -->
+		<key name="read_cache_buffer_size">2000000</key>
+		<!-- The size of the buffer for sending data -->
+		<key name="write_buffer_size">4000000</key>
+		<!-- The size of the cache (backup) buffer for sending data -->
+		<key name="write_cache_buffer_size">2000000</key>
+		<!-- The minimum number of bytes to queue before attempting to connect to the server -->
+		<!-- (Should be less than the write buffer size) -->
+		<key name="min_bytes_to_send">2000000</key>
+	</section>
+	<!-- Section to describe encodings of data to and from the server. -->
+	<!--  Valid values: none, gzip -->
+	<section name="encodings">
+		<!-- Name of encoding -->
+		<key name="encoding">gzip</key>
+	</section>
+	<!-- Section to describe Mandiant Agent logging parameters -->
+	<section name="logging">
+		<!-- Enable Mandiant Agent logging -->
+		<key name="enabled">true</key>
+		<!-- The maximum index of the roll over files -->
+		<key name="maxIndex">4</key>
+		<!-- The minimum index of the roll over files -->
+		<key name="minIndex">0</key>
+		<!-- The maximum size of the log file before it is rolled over -->
+		<key name="maxFileSize">250</key>
+		<key name="filename">magent</key>
+
+		<key name="fileext">log</key>
+		<!-- Have Mandiant Agent log messages at or above a particular level -->
+		<!--  Valid values: debug, info, warning, error -->
+		<key name="log_level">info</key>
+	</section>
+	<!-- Section to describe the Mandiant Agent SSL credentials -->
+	<section name="credentials">
+		<!-- The Store & Forward Server CA certficate. -->
+		<key name="cacert">-----BEGIN CERTIFICATE-----
+MIIDnTCCAoWgAwIBAgIJAMX4DYwHlUkNMA0GCSqGSIb3DQEBBQUAMGUxCzAJBgNV
+BAYTAlVTMQswCQYDVQQIDAJWQTENMAsGA1UEBwwEQUxFWDERMA8GA1UECgwITUFO
+RElBTlQxEjAQBgNVBAsMCUFQUExJQU5DRTETMBEGA1UEAwwKUFJPRFVDVElPTjAe
+Fw0xMzEwMjUwNjU0MzZaFw0yMzEwMjMwNjU0MzZaMGUxCzAJBgNVBAYTAlVTMQsw
+CQYDVQQIDAJWQTENMAsGA1UEBwwEQUxFWDERMA8GA1UECgwITUFORElBTlQxEjAQ
+BgNVBAsMCUFQUExJQU5DRTETMBEGA1UEAwwKUFJPRFVDVElPTjCCASIwDQYJKoZI
+hvcNAQEBBQADggEPADCCAQoCggEBAKmclmH92stw5HxPKXI35XDh4GoUD/y5VON2
+liYJSXYgP/n1wders0hTerU/ymQ1KpkmV0fPf8DDroNmqhO2wQyDG38ZVoEupgxX
+fQwRwjPsD31F4KFJB/u21cF4yvQS4/wpxogmtxTESkacpX/tKg/qeT5nrD2yPqtZ
+G0h83WjnVusOICWXUl3phjdqk5FDLcrz6U8sPm+fNmD7tqxGz/6vx4p1pqGR7pSu
+8ZrJHRbQBJXQhn/4cd+XAQ1s0+kN8kIK0K3FQ5EU83VJfa6Th1qQnyalM/GA552F
+P75BnjLjfIdJgZ4yQSRMJod9qxVOW+fwUZ3YRzm4Fus3C/sLSXsCAwEAAaNQME4w
+HQYDVR0OBBYEFOxH7V8h1I5/GTUKzRdi2UsNy0VYMB8GA1UdIwQYMBaAFOxH7V8h
+1I5/GTUKzRdi2UsNy0VYMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQADggEB
+AHuIzQdxwYEsgKLmc+aeGsRPXbW9GfDV/kbU3WrZZQ8Gh4Ot3s3A7TtxhdH0m22O
+byHEsKoaekYoM1jCLoJ4f5K0n/UdjWXjwqc49TFW/GVtuURMR85WIhpofeoNxGWv
++OGGNcG+EVMaiEgThdxddLeLA6vKtfEuosTu6begyfp4j/kaN216R8mSUqX0AL3k
+eq+N4/aV7BhXHMmLIXRYq7D/EoaY4d2jwNng0y7LVefhPsDIJgFxI9owAjbFHUuE
+h0qcYfG6mKwxtJAtDProiL1menTrHJug00R6jLd3llYf3048QdtB+jnl8yHLflEM
+7rQbk6jhn/c2mC7hn3wmfrc=
+-----END CERTIFICATE-----
+</key>
+                <key name="crl">-----BEGIN X509 CRL-----
+MIIB4zCBzAIBATANBgkqhkiG9w0BAQsFADBlMQswCQYDVQQGEwJVUzELMAkGA1UE
+CAwCVkExDTALBgNVBAcMBEFMRVgxETAPBgNVBAoMCE1BTkRJQU5UMRIwEAYDVQQL
+DAlBUFBMSUFOQ0UxEzARBgNVBAMMClBST0RVQ1RJT04XDTEzMTAyNTA2NTQ0M1oX
+DTIzMTAyMzA2NTQ0M1qgMzAxMB8GA1UdIwQYMBaAFOxH7V8h1I5/GTUKzRdi2UsN
+y0VYMA4GA1UdFAQHAgUFeGAGdjANBgkqhkiG9w0BAQsFAAOCAQEAo6FaGnO/Hr4F
+CI645UZgnayalOfkHQMFw9q5vU4yXL4nFfYFgTqjzkzCRUormy8aVFKjTuG0xrma
+9s1Etkd7rWVqrjagS/drkrpPZ8KHccxLHBEeF9M2K2Qeir0N8ij3C7PYLYA5rV2Q
+Q96qTJyftHNbOGPoUxbXbyt74BJrgRDfNKteNMmxiZEg0Jlgl1tY/AWf2T8ibBZ1
+DjkahDur9+eRFZ4QYjRvfAKISFf1O1QzWvDrwcPHwNLrIdVIOifrOWQcjEn1z3Wh
+i0ZcJsSiBZ1JFR76fWBcFRqcQ7KlSKiYlSkdNf2wIvhJExvlr+TSH2VV/G/OpObh
+SXZoxpW6Xw==
+-----END X509 CRL-----
+</key>
+	</section>
+</agent_configuration>
